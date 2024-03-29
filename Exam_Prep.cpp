@@ -1,28 +1,29 @@
+//TLE (checked with DMOJ)
 #include <bits/stdc++.h>
 
 using namespace std;
 
-long long parent [1000001];
-long long sum [1000001];
-long long resource[1000001];
+long long parent [1000010];
+long long sum [1000010];
+long long resource[1000010];
 
-int fd(int a){
+long long fd(long long a){
     while (parent[a]!=a){
         a = parent[a];
     }
     return a;
 }
 
-bool same(int a, int b){
+bool same(long long a, long long b){
     return fd(a)==fd(b);
 }
 
 
 void unite(int a, int b){
     if (!same(a,b)){
-        sum[fd(a)]+=sum[fd(b)];
-        resource[fd(a)]+= resource[fd(b)];
-        parent[fd(b)] = fd(a);
+        sum[a]+=sum[b];
+        resource[a]+= resource[b];
+        parent[b] = fd(a);
     }
 }
 
@@ -40,7 +41,8 @@ int main() {
         long long cmd; cin>>cmd;
         if (cmd==1){
             long long a, b; cin>>a>>b;
-            unite(a, b);
+            a = fd(a);
+            b = fd(b);
             sum[fd(a)]>sum[fd(b)]?unite(a,b):unite(b,a);
         }
         else if (cmd == 2){

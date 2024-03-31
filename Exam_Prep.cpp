@@ -1,4 +1,4 @@
-//TLE (checked with DMOJ)
+//solved (checked with DMOJ)
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -8,19 +8,22 @@ long long sum [1000010];
 long long resource[1000010];
 
 long long fd(long long a){
-    while (parent[a]!=a){
-        a = parent[a];
+    if (parent[a]==a){
+        return a;
     }
-    return a;
+    return parent[a] = fd(parent[a]);
 }
 
 bool same(long long a, long long b){
-    return fd(a)==fd(b);
+    return a==b;
 }
 
 
 void unite(int a, int b){
     if (!same(a,b)){
+        if (sum[b]>sum[a]){
+            swap(a,b);
+        }
         sum[a]+=sum[b];
         resource[a]+= resource[b];
         parent[b] = fd(a);
@@ -29,6 +32,7 @@ void unite(int a, int b){
 
 
 int main() {
+    cin.tie(0);ios::sync_with_stdio(0);
     long long n, q; cin>>n>>q;
     for (int i = 0; i<n; i++){
         long long a; cin>>a;
@@ -43,7 +47,7 @@ int main() {
             long long a, b; cin>>a>>b;
             a = fd(a);
             b = fd(b);
-            sum[fd(a)]>sum[fd(b)]?unite(a,b):unite(b,a);
+            sum[a]>sum[b]?unite(a,b):unite(b,a);
         }
         else if (cmd == 2){
             long long a; cin>>a;
@@ -55,4 +59,5 @@ int main() {
         }
         q--;
     }
+    return 0;
 }
